@@ -1,15 +1,16 @@
 ## R Programming Assignment 2
 ##The funtion takes a vector and dimensions of a matrix to convert into a special matrix within it 
 
-makeCacheMatrix <- function(x, nrow, ncol) {
-  i <- NULL
-  set <- function(y, nrow,ncol) {
+makeCacheMatrix <- function(x = matrix()) {
+  inv <- NULL
+  
+  set <- function(y) {
     x <<- y
-    i <<- NULL
+    inv <<- NULL
   }
-  get <- function() {matrix(x,nrow,ncol)}
-  setinverse <- function(solve) i <<- solve
-  getinverse <- function() i
+  get <- function() x
+  setinverse <- function(solve) inv <<- solve
+  getinverse <- function() inv
   list(set = set, get = get,
        setinverse = setinverse,
        getinverse = getinverse)
@@ -21,10 +22,10 @@ makeCacheMatrix <- function(x, nrow, ncol) {
 ## the function returns a typed message that the matrix is a "Singular Matrix"
 
 cacheSolve <- function(x, ...) {
-  i <- x$getinverse()
-  if(!is.null(i)) {
+  inv <- x$getinverse()
+  if(!is.null(inv)) {
     message("getting cached data")
-    return(i)
+    return(inv)
   }
   data <- x$get()
   dm <- det(data)
@@ -33,7 +34,7 @@ cacheSolve <- function(x, ...) {
     message("Singural Matrix")
     return()
   }
-  i <- solve(data)
-  x$setinverse(i)
-  i
+  inv <- solve(data)
+  x$setinverse(inv)
+  inv
 }
